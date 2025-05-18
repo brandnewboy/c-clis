@@ -22,7 +22,7 @@ program
 
 program
     .command('start')
-    .description('Start the project')
+    .description('Start the server by c-build')
     .action(startServer)
 
 program.parse()
