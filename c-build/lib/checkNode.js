@@ -1,5 +1,5 @@
 const semver = require('semver')
-
+const logger = require('../lib/utils/logger')
 const checkNode = (minNodeVersion) => {
     // x.y.z
     // major.minor.patch
@@ -17,7 +17,7 @@ const checkNode = (minNodeVersion) => {
     // console.log(semver.lt('8.0.1', '11.0.0'))
 
     const nodeVersion = semver.valid(semver.coerce(process.version))
-    console.log(nodeVersion, minNodeVersion)
+    logger.info({ message: `node version: ${nodeVersion}` })
     return semver.satisfies(nodeVersion, '>=' + minNodeVersion)
 }
 

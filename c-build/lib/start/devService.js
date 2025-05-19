@@ -7,16 +7,17 @@ const net = require('node:net')
 ;(async () => {
     const DEFAULT_PORT = '9001'
 
-    program.option('-p, --port <port>', 'port number', DEFAULT_PORT).parse(process.argv);
+    program
+        .option('--config <config>', 'config file path')
+        .option('-p, --port <port>', 'port number', DEFAULT_PORT)
+        .option('--customWebpackPath <customWebpackPath>')
+        .option('--mode <mode>', 'build mode')
+        .allowUnknownOption()
+        .parse(process.argv);
 
-    const { port } = program.opts()
+    const { port, config, customWebpackPath, mode } = program.opts()
 
     try {
-
-        server1 = new net.createServer()
-        server1.listen(parseInt(port), 'localhost', () => {
-            console.log('server1 ---> ', server1.address())
-        })
 
         const newPort = await detectPort(port)
         if (newPort !== parseInt(port)) {
@@ -28,9 +29,8 @@ const net = require('node:net')
             }
         }
 
-        process.env.NODE_ENV = 'development'
-        const service = new Service({ port: newPort })
-        service.start()
+        const service = new Service({ port: newPort, config, customWebpackPath, mode })
+        await service.start()
 
     } catch (error) {
         console.error(error)

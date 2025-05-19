@@ -14,9 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "@inquirer/prompts": "^7.5.1",
+    "@types/winston": "^2.4.4",
     "chokidar": "^4.0.3",
     "commander": "^13.1.0",
     "detect-port": "^2.1.0",
-    "semver": "^7.7.2"
+    "fast-glob": "^3.3.3",
+    "semver": "^7.7.2",
+    "webpack-5-chain": "^8.0.2",
+    "winston": "^3.17.0"
   }
 }
