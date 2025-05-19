@@ -3,6 +3,7 @@ const { Command } = require('commander')
 const pkg = require('../package.json')
 const { checkNode } = require('../lib/checkNode')
 const { startServer } = require('../lib//start/startServer')
+const path = require("node:path");
 
 
 const MIN_NODE_VERSION = '20.0.0'
@@ -23,6 +24,9 @@ program
 program
     .command('start')
     .description('Start the server by c-build')
+    .option('--config <config>', 'config file path')
+    .allowUnknownOption()
     .action(startServer)
 
-program.parse()
+
+program.parse(process.argv)

@@ -1,0 +1,12 @@
+{
+  "entry": "./src/index.js",
+  "output": "./dist/index.js",
+  "hooks": [
+    ["start", "./hooks/startHookFn.mjs"],
+    ["start", "./hooks/startHookFn2.js"]
+  ],
+  "plugins": [
+    "c-build-plugin-test1",
+    "c-build-plugin-vue"
+  ]
+}

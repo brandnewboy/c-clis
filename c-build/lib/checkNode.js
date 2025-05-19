@@ -17,7 +17,7 @@ const checkNode = (minNodeVersion) => {
     // console.log(semver.lt('8.0.1', '11.0.0'))
 
     const nodeVersion = semver.valid(semver.coerce(process.version))
-    console.log(nodeVersion, minNodeVersion)
+    console.log('node version: ', nodeVersion)
     return semver.satisfies(nodeVersion, '>=' + minNodeVersion)
 }
 

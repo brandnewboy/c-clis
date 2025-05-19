@@ -1,6 +1,7 @@
 const chokidar = require('chokidar')
 const path = require('node:path')
 const cp = require('node:child_process')
+const { getConfigFilePath } = require('../utils/index')
 
 // const runServer = () => {
 //     // 启动webpack服务
@@ -52,32 +53,33 @@ const cp = require('node:child_process')
 // }
 
 let child = null
-const runServer = () => {
+const runServer = opts => {
+    const { config = '' } = opts
     // 启动子进程服务 启动webpack服务
     const scriptPath = path.resolve(__dirname, './devService.js')
-    child = cp.fork(scriptPath, ['--port=8080'])
+    child = cp.fork(scriptPath, ['--port=8080', `--config=${config}`])
     child.on('exit', code => {
-        console.log('子进程退出 ---> ', code)
+        // console.log('子进程退出 ---> ', code)
         if (code) {
-            // 若子进程退出码不为0(或null)，主进程也会跟着退出，主进程也要退出
-            console.log('主进程退出 ---> ', code)
+            // 若子进程退出码不为0(或null)，代表异常退出，主进程也会跟着退出，主进程也要退出
+            // console.log('主进程退出 ---> ', code)
             process.exit(code)
         }
     })
-
 }
 
 
-const onChange = () => {
+const onChange = args => {
     console.log('配置文件修改，重启服务...')
     child.kill()
-    runServer()
+    runServer(args)
 }
-const runWatcher = () => {
+const runWatcher = opts => {
+    const { config = '' } = opts
     // 启动配置监听服务 -> chokidar
-    const configPath = path.resolve(process.cwd(), 'lib/start/config.json')
+    const configPath = getConfigFilePath({ config })
     const watcher = chokidar.watch(configPath)
-        .on('change', onChange)
+        .on('change', () => onChange(opts))
         .on('error', err => {
             console.error('file watch error:', err)
             process.exit(1)
@@ -85,15 +87,15 @@ const runWatcher = () => {
 
 }
 
-const startServer = (args, options, cmd) => {
+const startServer = (options, cmd) => {
     console.log('Starting server...')
     // 1.通过子进程启动webpack-dev-server
     // 1.1 子进程启动可以避免主进程受到影响
     // 1.2 子进程启动可以方便重启，解决webpack-dev-server配置修改无法自动重启
-    runServer()
+    runServer(options)
 
     // 2.监听配置修改
-    runWatcher()
+    runWatcher(options)
 }
 
 module.exports = {
