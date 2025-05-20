@@ -19,6 +19,7 @@
     "commander": "^13.1.0",
     "detect-port": "^2.1.0",
     "fast-glob": "^3.3.3",
+    "mini-css-extract-plugin": "^2.9.2",
     "semver": "^7.7.2",
     "webpack-5-chain": "^8.0.2",
     "winston": "^3.17.0"
