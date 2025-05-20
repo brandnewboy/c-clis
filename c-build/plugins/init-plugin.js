@@ -1,6 +1,21 @@
 const path = require('node:path');
 const logger = require('../lib/utils/logger');
+
+/**
+ * @type {MiniCssExtractPlugin}
+ */
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+/**
+ * @type {HtmlWebpackPlugin}
+ */
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+/**
+ * @type {webpack}
+ */
+const { ProvidePlugin } = require('webpack');
+
 module.exports = function (ctx, params) {
     logger.info({
         prefix: 'InitPlugin',
@@ -95,14 +110,46 @@ module.exports = function (ctx, params) {
             esModule: false
         })
         .end();
+
     logger.info({
         prefix: 'InitPlugin',
         message: `set webpack module ejs related loader completed: ejs-loader`,
     })
 
+    // 配置plugins
+    config
+        .plugin('mini-css')
+        .use(MiniCssExtractPlugin, [{
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[name].[id].chunk.css'
+        }])
+        .end();
+
+    config
+        .plugin('html')
+        .use(HtmlWebpackPlugin, [{
+            title: 'c-build App',
+            filename: 'index.html',
+            template: path.resolve(process.cwd(), './public/index.html'),
+            chunks: ['index']
+        }])
+        .end();
+
+    config
+        .plugin('provide')
+        .use(ProvidePlugin, [{
+            $: 'jquery',
+            jQuery: 'jquery'
+        }])
+        .end();
 
 
 
+
+    logger.verbose({
+        prefix: 'InitPlugin webpackConfig.plugins',
+        message: config.toConfig().plugins,
+    })
 
     logger.verbose({
         prefix: 'InitPlugin webpackConfig.module.rules',
@@ -112,5 +159,10 @@ module.exports = function (ctx, params) {
     logger.verbose({
         prefix: 'InitPlugin finished webpack config',
         message: config.toConfig()
+    })
+
+    logger.info({
+        prefix: 'InitPlugin',
+        message: 'InitPlugin set webpack config all completed'
     })
 }

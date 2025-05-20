@@ -4,7 +4,9 @@ const { confirm  } = require('@inquirer/prompts')
 const Service = require('../service/service')
 const net = require('node:net')
 
-;(async () => {
+;
+const logger = require("../utils/logger");
+(async () => {
     const DEFAULT_PORT = '9001'
 
     program
@@ -30,7 +32,12 @@ const net = require('node:net')
         }
 
         const service = new Service({ port: newPort, config, customWebpackPath, mode })
-        await service.start()
+        await service.start().then(() => {
+            logger.info({
+                prefix: 'devService',
+                message: `devService start successfully! running at: 127.0.0.1:${newPort}`,
+            })
+        })
 
     } catch (error) {
         console.error(error)
