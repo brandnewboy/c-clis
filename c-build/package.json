@@ -1,7 +1,7 @@
 {
-  "name": "@c-cli/c-build",
+  "name": "@coolforme/c-build",
   "version": "1.1.0",
-  "description": "",
+  "description": "This is a Webpack-based build tool that can help build projects quickly (for personal use, when you need to start a web project quickly, not in a production environment).",
   "main": "index.js",
   "bin": {
     "c-build": "./bin/index.js"
@@ -9,8 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["webpack", "build"],
+  "author": "clzhang",
   "license": "ISC",
   "dependencies": {
     "@inquirer/prompts": "^7.5.1",
@@ -28,5 +28,10 @@
     "webpack-5-chain": "^8.0.2",
     "webpack-dev-server": "^5.2.1",
     "winston": "^3.17.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "scope": "@coolforme"
   }
 }
