@@ -19,11 +19,12 @@ if (!isAll) {
 }
 
 if (!isList) {
-    output = []
     files.forEach(file => {
-        output.push(file)
+        output += file + '   '
     })
-    console.table(output)
+    const BLUE = '\x1b[32m';
+    const RESET = '\x1b[0m';
+    console.log(BLUE + output + RESET)
 } else {
     files.forEach((file, index) => {
         if (index === files.length - 1) {
@@ -45,13 +46,15 @@ if (!isList) {
         16384 -> 0100 000 000 000 000
         33206 -> 1000 000 110 110 110
          */
+        const BLUE = '\x1b[35m';
+        const RESET = '\x1b[0m';
         return prev
             + getFileType(stat.mode)
             + getAuthStr(stat.mode)
             + '\t' + subDirSize
             + '\t' + getFileUser(stat)
             + '\t' + getFileSizeAndDate(stat)
-            + '\t' + file + '\n';
+            + '\t' + BLUE + file + RESET + '\n';
 
     }, '')
     console.log(output)

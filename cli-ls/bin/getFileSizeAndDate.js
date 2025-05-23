@@ -9,7 +9,7 @@ const getFileSizeAndDate = stat => {
     const hour = d.getHours()
     const minute = d.getMinutes()
 
-    let dateStr = month + ' ' + date + ' ' + hour + ':' + minute
+    let dateStr = month  + date + ' ' + hour + ':' + minute
 
     return size + '\t' + dateStr
 }
