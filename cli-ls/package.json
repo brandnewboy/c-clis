@@ -1,7 +1,7 @@
 {
   "name": "@coolforme/c-ls",
   "version": "1.0.0",
-  "description": "",
+  "description": "This a very simple command line tool to list the files in the current directory.",
   "main": "index.js",
   "bin": {
     "c-ls": "./bin/index.js"
@@ -9,7 +9,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["cli", "list", "files"],
+  "author": "clzhang",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "scope": "@coolforme"
+  }
 }
