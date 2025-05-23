@@ -61,7 +61,8 @@ const runServer = opts => {
     const {
         config = '',
         customWebpackPath = '',
-        mode = 'development'
+        mode = 'development',
+        stopServer = false
     } = opts
     logger.verbose({ prefix: 'runServer args', message:  opts})
     child = cp.fork(
@@ -70,7 +71,8 @@ const runServer = opts => {
             '--port=8080',
             `--config=${config}`,
             `--customWebpackPath=${customWebpackPath}`,
-            `--mode=${mode}`
+            `--mode=${mode}`,
+            `--stopServer=${stopServer}`,
         ]
     )
 

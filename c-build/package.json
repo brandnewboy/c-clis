@@ -1,6 +1,6 @@
 {
   "name": "c-build",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -17,6 +17,8 @@
     "@types/winston": "^2.4.4",
     "chokidar": "^4.0.3",
     "commander": "^13.1.0",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.2",
     "detect-port": "^2.1.0",
     "fast-glob": "^3.3.3",
     "html-webpack-plugin": "^5.6.3",
@@ -24,6 +26,7 @@
     "semver": "^7.7.2",
     "webpack": "^5.99.9",
     "webpack-5-chain": "^8.0.2",
+    "webpack-dev-server": "^5.2.1",
     "winston": "^3.17.0"
   }
 }

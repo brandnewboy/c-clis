@@ -14,10 +14,11 @@ const logger = require("../utils/logger");
         .option('-p, --port <port>', 'port number', DEFAULT_PORT)
         .option('--customWebpackPath <customWebpackPath>')
         .option('--mode <mode>', 'build mode')
+        .option('--stopServer <stopServer>', 'stop server')
         .allowUnknownOption()
         .parse(process.argv);
 
-    const { port, config, customWebpackPath, mode } = program.opts()
+    const { port } = program.opts()
 
     try {
 
@@ -31,15 +32,18 @@ const logger = require("../utils/logger");
             }
         }
 
-        const service = new Service({ port: newPort, config, customWebpackPath, mode })
+        const service = new Service({ ...program.opts(), port: newPort })
         await service.start().then(() => {
             logger.info({
                 prefix: 'devService',
-                message: `devService start successfully! running at: 127.0.0.1:${newPort}`,
+                message: `devService executing completed!`,
             })
         })
 
     } catch (error) {
-        console.error(error)
+        logger.info({
+            prefix: 'devService executing failed!',
+            message: error.message,
+        })
     }
 })()

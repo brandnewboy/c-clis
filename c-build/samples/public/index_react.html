@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 引入 React 和 Babel -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.18.10/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- 使用 text/babel 类型的 script 标签 -->
+<script type="text/babel">
+  // 这里可以写 JSX 语法
+  const element = <h1>Hello, Babel!</h1>;
+  ReactDOM.render(element, document.getElementById('root'));
+</script>
+
+<!--<script>-->
+<!--  // Babel 库加载后会自动执行以下逻辑（简化版）-->
+<!--  document.addEventListener('DOMContentLoaded', () => {-->
+<!--    // 查找所有 type="text/babel" 的 script 标签-->
+<!--    document.querySelectorAll('script[type="text/babel"]').forEach(script => {-->
+<!--      // 编译 JSX 代码-->
+<!--      const { code } = Babel.transform(script.textContent, {-->
+<!--        presets: ['react']-->
+<!--      });-->
+
+<!--      // 执行编译后的代码-->
+<!--      new Function('React', 'ReactDOM', code)(React, ReactDOM);-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
+</body>
+</html>

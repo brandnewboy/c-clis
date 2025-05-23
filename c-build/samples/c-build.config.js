@@ -23,11 +23,6 @@ module.exports = {
         return [
             ['./plugins/c-build-plugin-custom01', { name: 'zahngsan', age: 23 }],
             function (ctx) {
-                const webpackConfig = ctx.getWebpackConfig()
-                webpackConfig
-                    .entry('other')
-                    .add('src/other.js')
-                    .end();
                 console.log(ctx.getValue('sharedState1'))
             }
         ]

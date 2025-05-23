@@ -38,6 +38,7 @@ program
     .option('--custom-webpack-path <customWebpackPath>', 'customWebpack directory')
     .option('--mode <mode>', 'build mode', 'development')
     .option('-d, --debug [debug]', 'debug mode', false)
+    .option('--stop-server', 'stop server', false)
     .allowUnknownOption()
     .action(startServer)
 

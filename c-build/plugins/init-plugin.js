@@ -16,6 +16,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
  */
 const { ProvidePlugin } = require('webpack');
 
+/**
+ * @type {CssMinimizerPlugin}
+ */
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 module.exports = function (ctx, params) {
     logger.info({
         prefix: 'InitPlugin',
@@ -54,11 +59,12 @@ module.exports = function (ctx, params) {
     config
         .output
         .path(path.resolve(runCmdDir, './dist'))
-        .filename('[name]_[hash].js')
+        .filename('js/[name]_[fullhash].js')
+        .clean(true)
         .end();
     logger.info({
         prefix: 'InitPlugin',
-        message: `set webpack output completed, dist: '[name]_[hash].js'`,
+        message: `set webpack output completed, dist: '[name]_[fullhash].js'`,
     })
 
     // 设置module css 相关 loader配置
@@ -92,7 +98,7 @@ module.exports = function (ctx, params) {
             }
         })
         .generator({
-            filename: 'images/[name].[hash].[ext]',
+            filename: 'images/[name].[fullhash].[ext]',
         })
         .end();
     logger.info({
@@ -120,8 +126,8 @@ module.exports = function (ctx, params) {
     config
         .plugin('mini-css')
         .use(MiniCssExtractPlugin, [{
-            filename: 'css/[name].css',
-            chunkFilename: 'css/[name].[id].chunk.css'
+            filename: 'css/[name]_[fullhash].css',
+            chunkFilename: 'css/[name]_[fullhash].css'
         }])
         .end();
 
@@ -142,6 +148,50 @@ module.exports = function (ctx, params) {
             jQuery: 'jquery'
         }])
         .end();
+    logger.info({
+        prefix: 'InitPlugin',
+        message: `set webpack plugins completed`,
+    })
+
+
+    // 配置optimization
+    config
+       .optimization
+        .minimize(true)
+        .usedExports(true)// treeshaking
+        .end();
+
+    config
+        .optimization
+        .minimizer('css-minimizer')
+        .use(CssMinimizerPlugin, [{}])
+        .end();
+
+    config
+        .optimization
+        .splitChunks({
+            minSize: 30 * 1024,
+            chunks: 'all',
+            name: 'common',
+            cacheGroups: {
+                'jquery': {
+                    test: /jquery/,
+                    name: 'jquery',
+                    chunks: 'all',
+                },
+                'lodash-es': {
+                    test: /lodash-es/,
+                    name: 'lodash-es',
+                    chunks: 'all',
+                }
+            }
+        })
+        .end();
+
+    logger.info({
+        prefix: 'InitPlugin',
+        message: `set webpack optimization completed`,
+    })
 
 
 
@@ -157,9 +207,15 @@ module.exports = function (ctx, params) {
     })
 
     logger.verbose({
+        prefix: 'InitPlugin webpackConfig.optimization',
+        message: config.toConfig().optimization,
+    })
+
+    logger.verbose({
         prefix: 'InitPlugin finished webpack config',
         message: config.toConfig()
     })
+
 
     logger.info({
         prefix: 'InitPlugin',
