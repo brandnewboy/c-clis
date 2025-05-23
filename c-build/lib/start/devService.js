@@ -32,7 +32,11 @@ const logger = require("../utils/logger");
             }
         }
 
-        const service = new Service({ ...program.opts(), port: newPort })
+        const service = new Service({
+            ...program.opts(),
+            port: newPort,
+            stopServer: program.opts().stopServer === 'true',
+        })
         await service.start().then(() => {
             logger.info({
                 prefix: 'devService',

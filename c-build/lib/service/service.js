@@ -50,7 +50,7 @@ class Service {
         if (this.options.stopServer) {
             logger.warn({
                 prefix: 'Service startServer',
-                message: 'startServer stop, cause by param --stop-server'
+                message: 'startServer stop, cause by param --stop-server=' + this.options.stopServer
             })
             return
         }

@@ -1,0 +1,26 @@
+# 开发工具相关
+.idea/
+.vscode/
+
+
+# 示例相关
+samples/
+
+# 测试相关
+test/
+tests/
+__tests__/
+
+# 日志相关
+*.log
+
+# 缓存相关
+node_modules/
+.cache/
+tmp/
+
+# 打包构建产物
+dist/
+
+# 备份文件
+bin/learn-backup.js
