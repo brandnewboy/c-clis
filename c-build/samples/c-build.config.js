@@ -1,4 +1,5 @@
 const path = require('node:path')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const entryPath = './src/index.js'
 module.exports = {
@@ -23,7 +24,21 @@ module.exports = {
         return [
             ['./plugins/c-build-plugin-custom01', { name: 'zahngsan', age: 23 }],
             function (ctx) {
-                console.log(ctx.getValue('sharedState1'))
+                /**
+                 * @type {import('webpack-5-chain')}
+                 */
+                const config = ctx.getWebpackConfig()
+                config
+                    .plugin('mini-css')
+                    .tap(args => {
+                        return [
+                            {
+                                filename: 'css/[name].css',
+                                chunkFilename: 'css/[name].css'
+                            }
+                        ]
+                    })
+                    .end()
             }
         ]
     }

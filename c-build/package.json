@@ -1,6 +1,6 @@
 {
   "name": "@coolforme/c-build",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "This is a Webpack-based build tool that can help build projects quickly (for personal use, when you need to start a web project quickly, not in a production environment).",
   "main": "index.js",
   "bin": {
