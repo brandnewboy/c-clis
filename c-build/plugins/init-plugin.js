@@ -126,8 +126,8 @@ module.exports = function (ctx, params) {
     config
         .plugin('mini-css')
         .use(MiniCssExtractPlugin, [{
-            filename: 'css/[name]_[fullhash].css',
-            chunkFilename: 'css/[name]_[fullhash].css'
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[name].css'
         }])
         .end();
 
