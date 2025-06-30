@@ -11,7 +11,6 @@ const InitPlugin = require('../../plugins//init-plugin')
 const CustomPlugin = require('../../plugins/custom-plugin')
 const logger = require('../../lib/utils/logger')
 
-// 根据webpack-dev-server编写jsDoc注释（import 已有类型）
 /**
  * @typedef {import('webpack-dev-server')} WebpackDevServer
  * @type {WebpackDevServer}
@@ -66,9 +65,6 @@ class Service {
         }
         await this.initWebpack()
         return true
-        // if (!this.stop) {
-        //     await this.initWebpack()
-        // }
     }
 
     async startServer() {
@@ -79,33 +75,6 @@ class Service {
             const webpack = require(this.webpack)
             const webpackConfig = this.webpackChain.toConfig()
             compiler = webpack(webpackConfig)
-            // compiler.run((err, stats) => {
-            //     if (err) {
-            //         logger.error({
-            //             prefix: 'Service startServer compiler.run failed',
-            //             message: err
-            //         })
-            //     } else {
-            //         const res = stats.toJson({ all: true, errors: true, warnings: true, timings: true })
-            //         if (res.errors) {
-            //             res.errors.forEach(err => {
-            //                 logger.error({
-            //                     prefix: 'Service startServer compiler.run errors',
-            //                     message: err
-            //                 })
-            //             })
-            //         }
-            //         logger.info({
-            //             prefix: 'Service startServer compiler.run completed',
-            //             message: 'compile done',
-            //         })
-            //     }
-            // })
-            // logger.verbose({
-            //     prefix: 'Service startServer compiler',
-            //     message: compiler
-            // })
-
             /**
              * @typedef {import('webpack-dev-server').DevServerConfiguration} DevServerConfiguration
              * @type {DevServerConfiguration}
@@ -211,23 +180,7 @@ class Service {
             .path('dist')
             .filename('[name]-[hash].js')
             .end();
-        // this.webpackChain.module
-        //     .rule('lint')
-        //     .test(/\.js$/)
-        //     .exclude
-        //     .add('node_modules')
-        //     .end()
-        //     .include
-        //     .add('src')
-        //     .end()
-        //     .use('eslint')
-        //     .loader('eslint-loader')
-        //     .options({
-        //         rules: {
-        //             semi: 'off',
-        //         }
-        //     })
-        // console.log(JSON.stringify(this.webpackChain.toConfig()))
+
         logger.verbose({
             prefix: 'Service resolveConfig complete',
             message: this.config
