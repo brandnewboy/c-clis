@@ -2,9 +2,7 @@ const { program } = require('commander')
 const { detectPort } = require('detect-port')
 const { confirm  } = require('@inquirer/prompts')
 const Service = require('../service/service')
-const net = require('node:net')
 
-;
 const logger = require("../utils/logger");
 (async () => {
     const DEFAULT_PORT = '9001'

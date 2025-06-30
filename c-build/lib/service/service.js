@@ -8,6 +8,7 @@ const WebpackChain = require('webpack-5-chain')
 const Consts = require('./constants')
 const { judgeIfExists } = require("../utils")
 const InitPlugin = require('../../plugins//init-plugin')
+const CustomPlugin = require('../../plugins/custom-plugin')
 const logger = require('../../lib/utils/logger')
 
 // 根据webpack-dev-server编写jsDoc注释（import 已有类型）
@@ -37,23 +38,40 @@ class Service {
     }
 
     async start() {
+        const isStart = await this.prepare()
+        if (isStart) {
+            await this.startServer()
+        }
+    }
+
+    async build() {
+        const isBuild = await this.prepare()
+        if (isBuild) {
+            await this.startBuild()
+        }
+    }
+
+    async prepare() {
         await this.resolveConfig()
         await this.registerHooks()
         await this.emitHooks(Consts.HOOK_START)
         await this.registerPlugins()
         await this.runPlugin()
-        await this.initWebpack()
-        await this.startServer()
-    }
-
-    async startServer() {
         if (this.options.stopServer) {
             logger.warn({
                 prefix: 'Service startServer',
                 message: 'startServer stop, cause by param --stop-server=' + this.options.stopServer
             })
-            return
+            return false
         }
+        await this.initWebpack()
+        return true
+        // if (!this.stop) {
+        //     await this.initWebpack()
+        // }
+    }
+
+    async startServer() {
         let compiler;
         let devServer;
         try {
@@ -123,6 +141,49 @@ class Service {
             process.exit(1)
         }
     }
+
+    async startBuild() {
+        let compiler;
+        try {
+            /** @type {import('webpack')} **/
+            const webpack = require(this.webpack)
+            const webpackConfig = this.webpackChain.toConfig()
+            compiler = webpack(webpackConfig)
+            if (!compiler) {
+                logger.error({
+                    prefix: 'Service init compiler object failed',
+                    message: compiler
+                })
+            }
+            compiler.run((err, stats) => {
+                if (err) {
+                    logger.error({
+                        prefix: 'Service build compiler.run failed',
+                        message: err
+                    })
+                } else {
+                    const res = stats.toJson({ all: true, errors: true, warnings: true, timings: true })
+                    if (res.errors) {
+                        res.errors.forEach(err => {
+                            logger.error({
+                                prefix: 'Service build compiler.run errors',
+                                message: err
+                            })
+                        })
+                    }
+                    logger.info({
+                        prefix: 'Service build compiler.run completed',
+                        message: 'compile done',
+                    })
+                }
+            })
+        } catch (error) {
+            logger.error({ prefix: 'Service build fail', message: error })
+            process.exit(1)
+        }
+    }
+
+
 
     async resolveConfig() {
         const { config } = this.options
@@ -243,7 +304,7 @@ class Service {
     async registerPlugins() {
         const { plugins: _plugins } = this.config
         // 内置插件
-        const builtInPlugins = [InitPlugin]
+        const builtInPlugins = [InitPlugin, CustomPlugin]
         builtInPlugins.forEach(plugin => {
             this.plugins.push({ mod: plugin })
         })

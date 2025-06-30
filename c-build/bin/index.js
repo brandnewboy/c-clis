@@ -3,7 +3,7 @@ const { Command } = require('commander')
 const pkg = require('../package.json')
 const { checkNode } = require('../lib/checkNode')
 const { startServer } = require('../lib//start/startServer')
-const path = require("node:path")
+const { build } = require('../lib/build/index')
 const { checkDebug } = require('../lib/utils/index')
 
 /**
@@ -41,6 +41,14 @@ program
     .option('--stop-server', 'stop server', false)
     .allowUnknownOption()
     .action(startServer)
+
+program
+    .command('build')
+    .description('Build the project by c-build')
+    .option('--config <config>', 'config file path')
+    .option('--custom-webpack-path <customWebpackPath>', 'customWebpack directory')
+    .allowUnknownOption()
+    .action(build)
 
 
 program.parse(process.argv)
